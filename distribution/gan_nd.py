@@ -72,16 +72,6 @@ mean = [0, 0]
 cov = [[1, 0.5], [0.5, 1]]
 target_param = (mean, cov)
 dim = 2
-# target_dist = "gaussian"
-# target_param = (23., 1.)
-# target_dist = "uniform"
-# target_param = (22, 24)
-# target_dist = "cauchy"
-# target_param = (23, 1)
-# noise_dist = "gaussian"
-# noise_param = (0., 1.)
-# noise_dist = "uniform"
-# noise_param = (-1, 1)
 noise_dist = "uniform"
 noise_param = (-1, 1)
 

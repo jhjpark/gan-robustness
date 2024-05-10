@@ -8,4 +8,4 @@ The code used for this project is contained in this repostiory. This includes co
 
 `pre-trianed`: This folder contains code for running the a pre-trained ResNet model on satellite images.
 
-Each subdirectory has its own corresponding README with more details about the contents and the correspodning sources.
+Each subdirectory has its own corresponding README with more details about the contents and the correspodning sources used.
