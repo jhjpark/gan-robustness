@@ -1,4 +1,4 @@
-# Using GANs for Data Augmentation in Satellite Data
+# Using GANs for Data Augmentation in Satellite-Based CNN Models
 
 The code used for this project is contained in this repostiory. This includes code for each of the three parts of the project. 
 
