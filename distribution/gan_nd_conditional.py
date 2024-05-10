@@ -28,7 +28,7 @@ class Encoder(nn.Module):
     def __init__(self):
         super().__init__()
         model = nn.Sequential(
-            nn.Linear(dim, 11),
+            nn.Linear(2 * dim, 11),
             nn.ELU(),
             nn.Linear(11, 29),
             nn.ELU()
@@ -105,13 +105,13 @@ for iteration in range(num_iteration):
         dec.zero_grad()
         target = data_sampler(target_dist, target_param, batch_size, mean[idx])
         noise = data_sampler(noise_dist, noise_param, batch_size)
-        encoded_target = enc.forward(target)
+        encoded_target = enc.forward(torch.cat((target, Tensor(mean[idx]).expand(batch_size, 2)), 1))
         decoded_target = dec.forward(encoded_target)
         L2_AE_target = (target - decoded_target).pow(2).mean()
         
         new_noise = torch.cat((noise, Tensor(mean[idx]).expand(batch_size, 2)), 1)
         transformed_noise = gen.forward(new_noise)
-        encoded_noise = enc.forward(transformed_noise)
+        encoded_noise = enc.forward(torch.cat((transformed_noise, Tensor(mean[idx]).expand(batch_size, 2)), 1))
         decoded_noise = dec.forward(encoded_noise)
         L2_AE_noise = (transformed_noise - decoded_noise).pow(2).mean()
         MMD = mix_rbf_mmd2(encoded_target, encoded_noise, sigma_list)
@@ -126,8 +126,8 @@ for iteration in range(num_iteration):
         target = data_sampler(target_dist, target_param, batch_size, mean[idx])
         noise = data_sampler(noise_dist, noise_param, batch_size)
         new_noise = torch.cat((noise, Tensor(mean[idx]).expand(batch_size, 2)), 1)
-        encoded_target = enc.forward(target)
-        encoded_noise = enc.forward(gen.forward(new_noise))
+        encoded_target = enc.forward(torch.cat((target, Tensor(mean[idx]).expand(batch_size, 2)), 1))
+        encoded_noise = enc.forward(torch.cat((gen.forward(new_noise), Tensor(mean[idx]).expand(batch_size, 2)), 1))
         MMD = torch.sqrt(F.relu(mix_rbf_mmd2(encoded_target, encoded_noise, sigma_list)))
         MMD.backward()
         gen_optimizer.step()
